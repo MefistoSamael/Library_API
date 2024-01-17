@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Library.Domain.SeedWork
 {
-    internal interface IRepository
+    public interface IRepository<T>
     {
+        IUnitOfWork UnitOfWork { get; }
     }
 }
