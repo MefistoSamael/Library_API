@@ -1,5 +1,6 @@
 ﻿using Library.Domain.Model;
 using Library.Domain.SeedWork;
+using Library.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,15 @@ namespace Library.Infrastructure.Repositories
 
         public Book Add(Book book)
         {
-            return _context.Books.Add(book).Entity;
+            var result = GetAsyncByISBN(book.ISBN).Result;
+            if (result is not null) 
+            {
+                throw new LibraryInfrastructureException("Book with such ISBN already exsists");
+            }
+            else
+            {
+                return _context.Books.Add(book).Entity;
+            }
         }
 
         public Book Delete(Book book)
@@ -37,20 +46,19 @@ namespace Library.Infrastructure.Repositories
             return _context.Books.Remove(book).Entity;
         }
 
-        public async Task<Book> GetAsyncById(int bookId)
+        public async Task<Book?> GetAsyncById(int bookId)
         {
             return await _context.Books.SingleOrDefaultAsync(b => b.Id == bookId);
         }
 
-        public async Task<Book>? GetAsyncByISBN(string ISBN)
+        public async Task<Book?> GetAsyncByISBN(string ISBN)
         {
             return await _context.Books.SingleOrDefaultAsync(b => b.ISBN == ISBN);
         }
 
         public Book Update(Book book)
         {
-            //_context.Entry(book).CurrentValues.SetValues(book);
-            _context.Entry(book).State = EntityState.Modified;
+            _context.Update(book);
             return book;
         }
     }

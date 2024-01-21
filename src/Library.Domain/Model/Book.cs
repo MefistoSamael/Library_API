@@ -25,7 +25,9 @@ namespace Library.Domain.Model
 
         public DateTime ReturningTime { get; private set; }
 
+#pragma warning disable CS8618 
         protected Book() { }
+#pragma warning restore CS8618 
 
         public Book(string iSBN, string name, string genre, string description, string author, DateTime borrowingTime, DateTime returningTime)
         {
@@ -114,6 +116,47 @@ namespace Library.Domain.Model
             {
                 ReturningTime = returningTime;
             }
+        }
+
+        public void UpdateBook(Book newBook)
+        {
+
+            ISBN = newBook.ISBN ?? throw new ArgumentNullException(nameof(ISBN));
+
+            Name = newBook.Name ?? throw new ArgumentNullException(nameof(Name));
+
+            Genre = newBook.Genre ?? throw new ArgumentNullException(nameof(Genre));
+
+            Description = newBook.Description ?? throw new ArgumentNullException(nameof(Description));
+
+            Author = newBook.Author ?? throw new ArgumentNullException(nameof(Author));
+
+            if (newBook.BorrowingTime == DateTime.MinValue)
+            {
+                throw new ArgumentException("Borrowing time are not valid");
+            }
+            else if (newBook.BorrowingTime > ReturningTime)
+            {
+                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
+            }
+            else
+            {
+                BorrowingTime = newBook.BorrowingTime;
+            }
+
+            if (newBook.ReturningTime == DateTime.MinValue)
+            {
+                throw new ArgumentException("Returning time are not valid");
+            }
+            else if (BorrowingTime > newBook.ReturningTime)
+            {
+                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
+            }
+            else
+            {
+                ReturningTime = newBook.ReturningTime;
+            }
+            
         }
     }
 }

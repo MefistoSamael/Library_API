@@ -15,8 +15,8 @@ namespace Library.Domain.Model
 
         Book Delete(Book book);
 
-        Task<Book>? GetAsyncById(int bookId);
+        Task<Book?> GetAsyncById(int bookId);
 
-        Task<Book>? GetAsyncByISBN(string ISBN);
+        Task<Book?> GetAsyncByISBN(string ISBN);
     }
 }
