@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Library.API.Application.Queries
 {
@@ -6,28 +7,36 @@ namespace Library.API.Application.Queries
     public class BookDTO
     {
         [DataMember]
+        [Required]
         public int Id { get; set; }
 
 #pragma warning disable CS8618
         [DataMember]
+        [Required]
         public string ISBN { get; set; }
 
         [DataMember]
+        [Required]
         public string Name { get; set; }
 
         [DataMember]
+        [Required]
         public string Genre { get; set; }
 
         [DataMember]
+        [Required]
         public string Description { get; set; }
 
         [DataMember]
+        [Required]
         public string Author { get; set; }
 
         [DataMember]
+        [Required]
         public DateTime BorrowingTime { get; set; }
 
         [DataMember]
+        [Required]
         public DateTime ReturningTime { get; set; }
 #pragma warning restore CS8618
 

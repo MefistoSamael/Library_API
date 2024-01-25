@@ -30,15 +30,9 @@ namespace Library.Infrastructure.Repositories
 
         public Book Add(Book book)
         {
-            var result = GetAsyncByISBN(book.ISBN).Result;
-            if (result is not null) 
-            {
-                throw new LibraryInfrastructureException("Book with such ISBN already exsists");
-            }
-            else
-            {
-                return _context.Books.Add(book).Entity;
-            }
+           
+            return _context.Books.Add(book).Entity;
+
         }
 
         public Book Delete(Book book)
@@ -60,6 +54,7 @@ namespace Library.Infrastructure.Repositories
         {
             _context.Update(book);
             return book;
+
         }
     }
 }

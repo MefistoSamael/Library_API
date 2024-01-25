@@ -31,11 +31,27 @@ namespace Library.Domain.Model
 
         public Book(string iSBN, string name, string genre, string description, string author, DateTime borrowingTime, DateTime returningTime)
         {
+
             ISBN = iSBN ?? throw new ArgumentNullException(nameof(iSBN));
+            if (ISBN.Length != 10 && ISBN.Length != 13)
+                throw new LibraryDomainException("ISBN length are invalid");
+
             Name = name ?? throw new ArgumentNullException(nameof(name));
+            if (Name.Length == 0)
+                throw new LibraryDomainException("Name length are invalid");
+
             Genre = genre ?? throw new ArgumentNullException(nameof(genre));
+            if (Genre.Length == 0)
+                throw new LibraryDomainException("Genre length are invalid");
+
             Description = description ?? throw new ArgumentNullException(nameof(description));
+            if (Description.Length == 0)
+                throw new LibraryDomainException("Description length are invalid");
+
             Author = author ?? throw new ArgumentNullException(nameof(author));
+            if (Author.Length == 0)
+                throw new LibraryDomainException("Author length are invalid");
+
 
             if (borrowingTime == DateTime.MinValue)
             {

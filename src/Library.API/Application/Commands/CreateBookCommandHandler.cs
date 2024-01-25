@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Library.API.Application.Commands
 {
-    public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, bool>
+    public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book?>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -16,13 +16,19 @@ namespace Library.API.Application.Commands
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+        public async Task<Book?> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
-            Book book = _mapper.Map<Book>(request.Book);
+                Book book = _mapper.Map<Book>(request.Book);
 
-            _bookRepository.Add(book);
+                var result = _bookRepository.Add(book);
 
-            return await _bookRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+                
+
+                if (await _bookRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken))
+                    return result;
+                else
+                    return null;
+
         }
     }
 }
