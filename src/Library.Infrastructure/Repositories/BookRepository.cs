@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Repositories
 {
-    public class BookRepository : IBookRepository
+    public class BookRepository : IBookRepository, IDisposable
     {
         private readonly LibraryContext _context;
 
@@ -55,6 +55,23 @@ namespace Library.Infrastructure.Repositories
             _context.Update(book);
             return book;
 
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
         }
     }
 }

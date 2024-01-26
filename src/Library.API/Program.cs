@@ -23,7 +23,7 @@ namespace Library.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -34,12 +34,10 @@ namespace Library.API
             builder.Services.AddAutoMapper(typeof(DtoToBookMappingProfile));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-            //builder.Services.AddEntityFrameworkSqlServer().AddDbContext<LibraryContext>(ServiceLifetime.Scoped);
             builder.Services.AddDbContext<LibraryContext>(cfg => cfg.UseSqlServer(builder.Configuration["ConnectionString"]));
 
             builder.Services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
 
-            //builder.Services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
             builder.Services.AddScoped<IBookQueries>(x => new BookQueries(builder.Configuration["ConnectionString"]!));
 
             builder.Services.AddAuthorization();
@@ -48,19 +46,12 @@ namespace Library.API
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        // указывает, будет ли валидироваться издатель при валидации токена
                         ValidateIssuer = true,
-                        // строка, представляющая издателя
                         ValidIssuer = AuthOptions.Issuer,
-                        // будет ли валидироваться потребитель токена
                         ValidateAudience = true,
-                        // установка потребителя токена
                         ValidAudience = AuthOptions.Audience,
-                        // будет ли валидироваться время существования
                         ValidateLifetime = true,
-                        // установка ключа безопасности
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                        // валидация ключа безопасности
                         ValidateIssuerSigningKey = true,
                     };
                 });
@@ -96,6 +87,11 @@ namespace Library.API
             });
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope()) 
+            {
+                scope.ServiceProvider.GetService<LibraryContext>();
+            }
 
             app.Run();
         }

@@ -59,7 +59,6 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> CreateBookAsync([FromBody] BookDTO book)
         {
-            book.Id = 0;
             try
             {
                 Book? result = await _mediator.Send(new CreateBookCommand(book));
