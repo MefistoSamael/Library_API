@@ -88,12 +88,15 @@ namespace Library.API
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope()) 
+            using (var scope = app.Services.CreateScope())
             {
-                scope.ServiceProvider.GetService<LibraryContext>();
+                var context = scope.ServiceProvider.GetService<LibraryContext>();
+                DataSeeder.SeedBooks(context!);
             }
 
             app.Run();
+
+            
         }
 
         public static class AuthOptions
