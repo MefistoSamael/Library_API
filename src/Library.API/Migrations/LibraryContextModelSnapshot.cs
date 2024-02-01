@@ -50,7 +50,8 @@ namespace Library.API.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -64,41 +65,10 @@ namespace Library.API.Migrations
                     b.HasIndex("ISBN")
                         .IsUnique();
 
-                    b.ToTable("books", (string)null);
-
-                    b.HasData(
-                        new
+                    b.ToTable("Books", t =>
                         {
-                            Id = 1,
-                            Author = "John Johnson",
-                            BorrowingTime = new DateTime(2, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Awesome comedy book",
-                            Genre = "Comedy",
-                            ISBN = "1111111111",
-                            Name = "First Book",
-                            ReturningTime = new DateTime(3, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Author = "Karl Young",
-                            BorrowingTime = new DateTime(4, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Outrageous book",
-                            Genre = "Horror",
-                            ISBN = "2222222222",
-                            Name = "Second Book",
-                            ReturningTime = new DateTime(5, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Author = "Klara",
-                            BorrowingTime = new DateTime(6, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Brilliant book",
-                            Genre = "Detective",
-                            ISBN = "333333333",
-                            Name = "Third Book",
-                            ReturningTime = new DateTime(7, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            t.HasCheckConstraint("ValidTime", "BorrowingTime < ReturningTime")
+                                .HasName("books");
                         });
                 });
 #pragma warning restore 612, 618

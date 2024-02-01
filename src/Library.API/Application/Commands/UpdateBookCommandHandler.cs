@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Application.Commands
 {
-    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book?>
+    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -21,14 +21,11 @@ namespace Library.API.Application.Commands
         }
         public async Task<Book?> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-                Book book = _mapper.Map<Book>(request.Book);
+            Book book = _mapper.Map<Book>(request.Book);
 
-                var result = _bookRepository.Update(book);
+            var result = _bookRepository.Update(book);
 
-                if (await _bookRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken))
-                    return result;
-                else
-                    return null;
+            return result;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Domain.Model
 {
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookRepository
     {
         Book Add(Book book);
 

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Application.Commands
 {
-    public class DeleteBookCommand : IRequest<Book?>
+    public class DeleteBookCommand : IRequest<Book>
     {
         public BookDTO Book { get; private set; }
 

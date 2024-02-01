@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Library.API.Application.Commands
 {
-    public class CreateBookCommand : IRequest<Book?>
+    public class CreateBookCommand : IRequest<Book>
     {
         public BookDTO Book { get; private set; }
 

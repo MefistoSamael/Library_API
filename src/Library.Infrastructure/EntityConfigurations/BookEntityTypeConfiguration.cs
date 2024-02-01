@@ -13,7 +13,8 @@ namespace Library.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Book> bookConfiguration)
         {
-            bookConfiguration.ToTable("books");
+            bookConfiguration.ToTable(t => t.HasCheckConstraint("ValidTime", "BorrowingTime < ReturningTime")
+                                            .HasName("books"));
 
             bookConfiguration.Property(b => b.Id).UseHiLo();
 
@@ -21,9 +22,15 @@ namespace Library.Infrastructure.EntityConfigurations
             
             bookConfiguration.HasIndex(b => b.ISBN).IsUnique();
 
-            // Didnt configurated explicitly other fields of Book entity
-            // because it's not necessary - fileds will be required because
-            // the are not null, and names are good
+
+            bookConfiguration.Property(b => b.Name).IsRequired();
+            bookConfiguration.Property(b => b.ISBN).HasMaxLength(13)
+                                                   .IsRequired();
+            bookConfiguration.Property(b => b.Genre).IsRequired();
+            bookConfiguration.Property(b => b.Description).IsRequired();
+            bookConfiguration.Property(b => b.Author).IsRequired();
+            bookConfiguration.Property(b => b.BorrowingTime).IsRequired();
+            bookConfiguration.Property(b => b.ReturningTime).IsRequired();
         }
     }
 }

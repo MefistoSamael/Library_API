@@ -15,14 +15,6 @@ namespace Library.Infrastructure.Repositories
     {
         private readonly LibraryContext _context;
 
-        public IUnitOfWork UnitOfWork
-        { 
-            get
-            {
-                return _context;
-            }
-        }
-
         public BookRepository(LibraryContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -30,14 +22,21 @@ namespace Library.Infrastructure.Repositories
 
         public Book Add(Book book)
         {
-           
-            return _context.Books.Add(book).Entity;
+            var result = _context.Books.Add(book).Entity;
+            
+            _context.SaveChanges();
+
+            return result;
 
         }
 
         public Book Delete(Book book)
         {
-            return _context.Books.Remove(book).Entity;
+            var result = _context.Books.Remove(book).Entity;
+            
+            _context.SaveChanges();
+            
+            return result;
         }
 
         public async Task<Book?> GetAsyncById(int bookId)
@@ -53,6 +52,9 @@ namespace Library.Infrastructure.Repositories
         public Book Update(Book book)
         {
             _context.Update(book);
+
+            _context.SaveChanges();
+
             return book;
 
         }

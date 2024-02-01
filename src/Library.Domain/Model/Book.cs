@@ -32,147 +32,20 @@ namespace Library.Domain.Model
         public Book(string iSBN, string name, string genre, string description, string author, DateTime borrowingTime, DateTime returningTime)
         {
 
-            ISBN = iSBN ?? throw new ArgumentNullException(nameof(iSBN));
-            if (ISBN.Length != 10 && ISBN.Length != 13)
-                throw new LibraryDomainException("ISBN length are invalid");
+            ISBN = iSBN;
 
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            if (Name.Length == 0)
-                throw new LibraryDomainException("Name length are invalid");
+            Name = name;
 
-            Genre = genre ?? throw new ArgumentNullException(nameof(genre));
-            if (Genre.Length == 0)
-                throw new LibraryDomainException("Genre length are invalid");
+            Genre = genre;
 
-            Description = description ?? throw new ArgumentNullException(nameof(description));
-            if (Description.Length == 0)
-                throw new LibraryDomainException("Description length are invalid");
+            Description = description;
 
-            Author = author ?? throw new ArgumentNullException(nameof(author));
-            if (Author.Length == 0)
-                throw new LibraryDomainException("Author length are invalid");
+            Author = author;
 
+            BorrowingTime = borrowingTime;
 
-            if (borrowingTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Borrowing time are not valid");
-            }
-            else
-            {
-                BorrowingTime = borrowingTime;
-            }
-
-            if (returningTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Returning time are not valid");
-            }
-            else
-            {
-                ReturningTime = returningTime;
-            }
-
-            if (borrowingTime > returningTime)
-            {
-                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
-            }
+            ReturningTime = returningTime;
         }
 
-        public void UpdateISBN(string iSBN)
-        {
-            ISBN = iSBN ?? throw new ArgumentNullException(nameof(iSBN));
-        }
-
-        public void UpdateName(string name)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(Name));
-        }
-
-        public void UpdateGenre(string genre)
-        {
-            Genre = genre ?? throw new ArgumentNullException(nameof(genre));
-        }
-
-        public void UpdateDesctiption(string description) 
-        {
-            Description = description ?? throw new ArgumentNullException(nameof(description));
-        }
-
-        public void UpdateAuthor(string author)
-        {
-            Author = author ?? throw new ArgumentNullException(nameof(author));
-        }
-
-        public void UpdateBorrowingTime(DateTime borrowingTime)
-        {
-            if (borrowingTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Borrowing time are not valid");
-            }
-            else if (borrowingTime > ReturningTime)
-            {
-                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
-            }
-            else
-            {
-                BorrowingTime = borrowingTime;
-            }
-        }
-
-        public void UpdateReturningTime(DateTime returningTime)
-        {
-            if (returningTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Returning time are not valid");
-            }
-            else if (BorrowingTime > returningTime)
-            {
-                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
-            }
-            else
-            {
-                ReturningTime = returningTime;
-            }
-        }
-
-        public void UpdateBook(Book newBook)
-        {
-
-            ISBN = newBook.ISBN ?? throw new ArgumentNullException(nameof(ISBN));
-
-            Name = newBook.Name ?? throw new ArgumentNullException(nameof(Name));
-
-            Genre = newBook.Genre ?? throw new ArgumentNullException(nameof(Genre));
-
-            Description = newBook.Description ?? throw new ArgumentNullException(nameof(Description));
-
-            Author = newBook.Author ?? throw new ArgumentNullException(nameof(Author));
-
-            if (newBook.BorrowingTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Borrowing time are not valid");
-            }
-            else if (newBook.BorrowingTime > ReturningTime)
-            {
-                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
-            }
-            else
-            {
-                BorrowingTime = newBook.BorrowingTime;
-            }
-
-            if (newBook.ReturningTime == DateTime.MinValue)
-            {
-                throw new ArgumentException("Returning time are not valid");
-            }
-            else if (BorrowingTime > newBook.ReturningTime)
-            {
-                throw new LibraryDomainException("Time when book was borrowed, are later then returning time");
-            }
-            else
-            {
-                ReturningTime = newBook.ReturningTime;
-            }
-            
-        }
     }
 }
