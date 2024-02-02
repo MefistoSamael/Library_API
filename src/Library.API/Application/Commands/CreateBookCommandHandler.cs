@@ -18,9 +18,9 @@ namespace Library.API.Application.Commands
 
         public async Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
-            Book book = _mapper.Map<Book>(request.Book);
+            Book book = _mapper.Map<Book>(request);
 
-            var result = _bookRepository.Add(book);
+            var result = await _bookRepository.AddAsync(book);
 
             return result;
         }

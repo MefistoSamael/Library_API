@@ -57,37 +57,14 @@ namespace Library.API.Controllers
         [HttpPost]
         [Authorize]
         [Produces("application/json")]
-        public async Task<IActionResult> CreateBookAsync([FromBody] BookDTO book)
+        public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand)
         {
-            try
-            {
-                Book? result = await _mediator.Send(new CreateBookCommand(book));
+            Book? result = await _mediator.Send(createBookCommand);
 
-                if (result is not null)
-                    return Ok(result);
-                else
-                    return BadRequest("Error: smth went wrong");
-            }
-            catch (Exception ex) when (ex is LibraryInfrastructureException ||
-                                       ex is LibraryDomainException ||
-                                       ex is ArgumentException)
-            {
-                return BadRequest($"Error: {ex.Message}");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest($"Error: {ex.ParamName} is null");
-            }
-            catch (DbUpdateException)
-            {
-                return BadRequest("Error: book with such isbn already exsists");
-            }
-            catch 
-            {
-                var result = new ObjectResult("Error: unhandled exception");
-                result.StatusCode = 500;
-                return result;
-            }
+            if (result is not null)
+                return Ok(result);
+            else
+                return BadRequest("Error: smth went wrong");
         }
 
         /// <summary>
@@ -122,41 +99,14 @@ namespace Library.API.Controllers
         [HttpPut]
         [Authorize]
         [Produces("application/json")]
-        public async Task<IActionResult> UpdateBookAsync([FromBody] BookDTO book)
+        public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand)
         {
-            try
-            {
-                Book? result = await _mediator.Send(new UpdateBookCommand(book));
+            Book? result = await _mediator.Send(updateBookCommand);
 
-                if (result is not null)
-                    return Ok(result);
-                else
-                    return BadRequest("Error: smth went wrong");
-            }
-            catch (Exception ex) when (ex is LibraryInfrastructureException ||
-                                       ex is LibraryDomainException ||
-                                       ex is ArgumentException)
-            {
-                return BadRequest($"Error: {ex.Message}");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest($"Error: {ex.ParamName} is null");
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest("Error: Invalid Id or data may have been modified or deleted since entities were loaded");
-            }
-            catch(DbUpdateException)
-            {
-                return BadRequest("Error: book with such isbn already exsists");
-            }
-            catch 
-            {
-                var result = new ObjectResult("Error: unhandled exception");
-                result.StatusCode = 500;
-                return result;
-            }
+            if (result is not null)
+                return Ok(result);
+            else
+                return BadRequest("Error: smth went wrong");
         }
 
         /// <summary>
@@ -190,36 +140,11 @@ namespace Library.API.Controllers
         [HttpDelete]
         [Authorize]
         [Produces("application/json")]
-        public async Task<IActionResult> DelteBookAsync([FromBody] BookDTO book)
+        public async Task<IActionResult> DelteBookAsync([FromBody] DeleteBookCommand deleteBookCommand)
         {
-            try
-            {
-                Book? result = await _mediator.Send(new DeleteBookCommand(book));
+            await _mediator.Send(deleteBookCommand);
 
-                if (result is not null)
-                    return Ok(result);
-                else
-                    return BadRequest("Error: smth went wrong");
-            }
-            catch (Exception ex) when (ex is LibraryDomainException ||
-                                       ex is ArgumentException)
-            {
-                return BadRequest($"Error: {ex.Message}");
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest($"Error: {ex.ParamName} is null");
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return BadRequest("Error: Invalid Id or data may have been modified or deleted since entities were loaded");
-            }
-            catch
-            {
-                var result = new ObjectResult("Error: unhandled exception");
-                result.StatusCode = 500;
-                return result;
-            }
+            return Ok();
         }
 
         /// <summary>
@@ -240,19 +165,12 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetAllbooksAsync()
         {
-            try 
-            {
-                var books = await _bookQueries.GetAllBooksAsync();
+            var books = await _bookQueries.GetAllBooksAsync();
 
-                if (books is not null)
-                    return Ok(books);
-                else
-                    return NotFound();
-            }
-            catch
-            {
+            if (books is not null)
+                return Ok(books);
+            else
                 return NotFound();
-            }
         }
 
         /// <summary>
@@ -274,20 +192,13 @@ namespace Library.API.Controllers
         [HttpGet]
         [Produces("application/json")]
         public async Task<IActionResult> GetBookByIdAsync(int id)
-        {
-            try
-            {
-                var book = await _bookQueries.GetBookByIdAsync(id);
+        { 
+            var book = await _bookQueries.GetBookByIdAsync(id);
 
-                if (book is not null)
-                    return Ok(book);
-                else
-                    return NotFound();
-            }
-            catch
-            {
+            if (book is not null)
+                return Ok(book);
+            else
                 return NotFound();
-            }
         }
 
         /// <summary>
@@ -310,19 +221,12 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetBookByISBNAsync(string ISBN)
         {
-            try
-            {
-                var book = await _bookQueries.GetBookByISBNAsync(ISBN);
+            var book = await _bookQueries.GetBookByISBNAsync(ISBN);
 
-                if (book is not null)
-                    return Ok(book);
-                else
-                    return NotFound();
-            }
-            catch
-            {
+            if (book is not null)
+                return Ok(book);
+            else
                 return NotFound();
-            }
         }
     }
 }

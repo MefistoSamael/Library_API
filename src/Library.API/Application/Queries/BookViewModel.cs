@@ -38,12 +38,14 @@ namespace Library.API.Application.Queries
         [DataMember]
         [Required]
         public DateTime ReturningTime { get; set; }
-#pragma warning restore CS8618
+
 
         public BookDTO()
         {
 
         }
+
+#pragma warning restore CS8618
 
         public BookDTO(string iSBN, string name, string genre, string description, string author, DateTime borrowingTime, DateTime returningTime, int id = 0)
         {

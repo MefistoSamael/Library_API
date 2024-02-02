@@ -19,11 +19,12 @@ namespace Library.API.Application.Commands
             _bookRepository = bookRepository;
             _mapper = mapper;
         }
-        public async Task<Book?> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
-        {
-            Book book = _mapper.Map<Book>(request.Book);
 
-            var result = _bookRepository.Update(book);
+        public async Task<Book> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        {
+            Book book = _mapper.Map<Book>(request);
+
+            var result = await _bookRepository.UpdateAsync(book);
 
             return result;
         }

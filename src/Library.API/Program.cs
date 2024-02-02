@@ -11,6 +11,11 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Reflection;
+using FluentValidation;
+using Library.API.Application.Validator;
+using Library.API.Application.Commands;
+using Library.API.Application;
+using MediatR;
 
 namespace Library.API
 {
@@ -31,8 +36,10 @@ namespace Library.API
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            builder.Services.AddAutoMapper(typeof(DtoToBookMappingProfile));
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            builder.Services.AddAutoMapper(
+                typeof(CreateBookCommandToBookMappingProfile),
+                typeof(UpdateBookCommandToBookMappingProfile),
+                typeof(DeleteBookCommandToBookMappingProfile));
 
             builder.Services.AddDbContext<LibraryContext>(cfg => cfg.UseSqlServer(builder.Configuration["ConnectionString"]));
 
@@ -55,6 +62,16 @@ namespace Library.API
                         ValidateIssuerSigningKey = true,
                     };
                 });
+
+            builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            builder.Services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            }
+            );
+
 
             var app = builder.Build();
 

@@ -9,11 +9,11 @@ namespace Library.Domain.Model
 {
     public interface IBookRepository
     {
-        Book Add(Book book);
+        Task<Book> AddAsync(Book book);
 
-        Book Update(Book book);
+        Task<Book> UpdateAsync(Book book);
 
-        Book Delete(Book book);
+        Task DeleteAsync(Book book);
 
         Task<Book?> GetAsyncById(int bookId);
 

@@ -20,23 +20,21 @@ namespace Library.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Book Add(Book book)
+        public async Task<Book> AddAsync(Book book)
         {
             var result = _context.Books.Add(book).Entity;
             
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return result;
 
         }
 
-        public Book Delete(Book book)
+        public async Task DeleteAsync(Book book)
         {
-            var result = _context.Books.Remove(book).Entity;
+            _context.Books.Remove(book);
             
-            _context.SaveChanges();
-            
-            return result;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Book?> GetAsyncById(int bookId)
@@ -49,13 +47,13 @@ namespace Library.Infrastructure.Repositories
             return await _context.Books.SingleOrDefaultAsync(b => b.ISBN == ISBN);
         }
 
-        public Book Update(Book book)
+        public async Task<Book> UpdateAsync(Book book)
         {
-            _context.Update(book);
+            var result = _context.Update(book).Entity;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return book;
+            return result;
 
         }
 

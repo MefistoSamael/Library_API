@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Application.Commands
 {
-    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, Book>
+    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -20,13 +20,11 @@ namespace Library.API.Application.Commands
             _mapper = mapper;
         }
 
-        public async Task<Book> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            Book book = _mapper.Map<Book>(request.Book);
+            Book book = _mapper.Map<Book>(request);
 
-            var result = _bookRepository.Delete(book);
-
-            return result;
+            await _bookRepository.DeleteAsync(book);
         }
     }
 }
