@@ -2,7 +2,7 @@
 using Library.API.Application.Commands;
 using Library.Domain.Model;
 
-namespace Library.API.Mapper
+namespace Library.API.Infrastructure.Mapper
 {
     public class DeleteBookCommandToBookMappingProfile : Profile
     {

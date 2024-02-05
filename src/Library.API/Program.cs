@@ -1,5 +1,4 @@
 using Library.API.Application.Queries;
-using Library.API.Mapper;
 using Library.Domain.Model;
 using Library.Infrastructure;
 using Library.Infrastructure.Repositories;
@@ -16,6 +15,8 @@ using Library.API.Application.Validator;
 using Library.API.Application.Commands;
 using Library.API.Application;
 using MediatR;
+using Library.API.Infrastructure.Mapper;
+using Library.API.Infrastructure;
 
 namespace Library.API
 {
@@ -75,7 +76,7 @@ namespace Library.API
 
             var app = builder.Build();
 
-
+            app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using ValidationException = Library.API.Application.Exceptions.ValidationException;
 
 namespace Library.API.Application
 {
