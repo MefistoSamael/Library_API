@@ -9,7 +9,7 @@ namespace Library.API.Application.Validator
         private readonly IBookRepository _bookRepository;
         public UpdateBookCommandValidator(IBookRepository bookRepository) 
         {
-            this._bookRepository = bookRepository;
+            _bookRepository = bookRepository;
 
             RuleFor(b => b.Id).NotEmpty();
 
@@ -39,7 +39,7 @@ namespace Library.API.Application.Validator
             if (book is not null)
                 return book.Id == command.Id;
             else
-                return false;
+                return true;
         }
     }
 }

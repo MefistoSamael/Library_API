@@ -29,7 +29,7 @@ namespace Library.API.Application.Queries
                 var result = (await connection.QueryAsync<BookDTO>(@$"SELECT * FROM books WHERE books.id = {id}")).SingleOrDefault();
 
                 if (result is null)
-                    throw new KeyNotFoundException();
+                    throw new KeyNotFoundException($"Queried object entity was not found, Key: {id}");
 
                 return result;
             }
@@ -44,7 +44,7 @@ namespace Library.API.Application.Queries
                 var result = (await connection.QueryAsync<BookDTO>(@$"SELECT * FROM books WHERE books.ISBN = '{ISBN}'")).SingleOrDefault();
 
                 if (result is null )
-                    throw new KeyNotFoundException();
+                    throw new KeyNotFoundException($"Queried object entity was not found, Key: {ISBN}");
 
                 return result;
             }

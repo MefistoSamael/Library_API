@@ -29,7 +29,7 @@ namespace Library.API.Controllers
         /// <summary>
         /// Creates a book.
         /// </summary>
-        /// <param name="book"></param>
+        /// <param name="createBookCommand"></param>
         /// <returns>A newly created book</returns>
         /// <remarks>
         /// Sample request:
@@ -42,14 +42,13 @@ namespace Library.API.Controllers
         ///         "Description": "zz",
         ///         "Author": "zz",
         ///         "BorrowingTime": "2023-01-01T00:00:00",
-        ///          "ReturningTime": "2023-02-02T00:00:00"
+        ///         "ReturningTime": "2023-02-02T00:00:00"
         ///    }
         ///
         /// </remarks>
         /// <response code="200">Returns the newly created item</response>
         /// <response code="400">If request body has incorrect values</response>
         /// <response code="401">If unauthorized request happend</response>
-        /// <response code="500">If request failed due to server error</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -59,18 +58,15 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand)
         {
-            Book? result = await _mediator.Send(createBookCommand);
+            Book result = await _mediator.Send(createBookCommand);
 
-            if (result is not null)
-                return Ok(result);
-            else
-                return BadRequest("Error: smth went wrong");
+            return Ok(result);
         }
 
         /// <summary>
         /// Updates a book.
         /// </summary>
-        /// <param name="book"></param>
+        /// <param name="updateBookCommand"></param>
         /// <returns>A updated book</returns>
         /// <remarks>
         /// Sample request:
@@ -101,18 +97,15 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand)
         {
-            Book? result = await _mediator.Send(updateBookCommand);
+            Book result = await _mediator.Send(updateBookCommand);
 
-            if (result is not null)
-                return Ok(result);
-            else
-                return BadRequest("Error: smth went wrong");
+            return Ok(result);
         }
 
         /// <summary>
         /// Deletes a book.
         /// </summary>
-        /// <param name="book"></param>
+        /// <param name="deleteBookCommand"></param>
         /// <returns>A deleted book</returns>
         /// <remarks>
         /// Sample request:

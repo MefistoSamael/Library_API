@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
 using ValidationException = Library.API.Application.Exceptions.ValidationException;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Library.API.Infrastructure
 {
-    public class ValidationExceptionHandlingMiddleware
+    public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public ValidationExceptionHandlingMiddleware(RequestDelegate next)
+        public ExceptionHandlingMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -26,7 +28,7 @@ namespace Library.API.Infrastructure
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status400BadRequest,
-                    Type = "ValidationFailure",
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                     Title = "Validation error",
                     Detail = "One or more validation errors has occurred"
                 };
@@ -38,6 +40,19 @@ namespace Library.API.Infrastructure
 
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
+                await context.Response.WriteAsJsonAsync(problemDetails);
+            }
+            catch (KeyNotFoundException ex) 
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4",
+                    Title = "The specified resource was not found",
+                    Detail = ex.Message
+                };
+
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
                 await context.Response.WriteAsJsonAsync(problemDetails);
             }
         }

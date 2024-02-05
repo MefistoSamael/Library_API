@@ -17,6 +17,7 @@ using Library.API.Application;
 using MediatR;
 using Library.API.Infrastructure.Mapper;
 using Library.API.Infrastructure;
+using Microsoft.OpenApi.Models;
 
 namespace Library.API
 {
@@ -35,7 +36,33 @@ namespace Library.API
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
             });
+
+
 
             builder.Services.AddAutoMapper(
                 typeof(CreateBookCommandToBookMappingProfile),
@@ -76,7 +103,7 @@ namespace Library.API
 
             var app = builder.Build();
 
-            app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

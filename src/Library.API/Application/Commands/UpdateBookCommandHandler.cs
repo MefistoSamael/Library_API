@@ -22,6 +22,10 @@ namespace Library.API.Application.Commands
 
         public async Task<Book> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
+            Book? entity = await _bookRepository.GetAsyncById(request.Id);
+            if (entity is null)
+                throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
+
             Book book = _mapper.Map<Book>(request);
 
             var result = await _bookRepository.UpdateAsync(book);
