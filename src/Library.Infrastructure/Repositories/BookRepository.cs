@@ -39,12 +39,12 @@ namespace Library.Infrastructure.Repositories
 
         public async Task<Book?> GetAsyncById(int bookId)
         {
-            return await _context.Books.SingleOrDefaultAsync(b => b.Id == bookId);
+            return await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.Id == bookId);
         }
 
         public async Task<Book?> GetAsyncByISBN(string ISBN)
         {
-            return await _context.Books.SingleOrDefaultAsync(b => b.ISBN == ISBN);
+            return await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.ISBN == ISBN);
         }
 
         public async Task<Book> UpdateAsync(Book book)

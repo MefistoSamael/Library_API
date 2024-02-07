@@ -110,15 +110,9 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /api/Book/
+        ///     DELETE /api/Book/
         ///     {
-        ///         "ISBN": "1234567701",
-        ///         "Name": "dz",
-        ///         "Genre": "zz",
-        ///         "Description": "zz",
-        ///         "Author": "zz",
-        ///         "BorrowingTime": "2023-01-01T00:00:00",
-        ///          "ReturningTime": "2023-02-02T00:00:00"
+        ///         "id": "71",
         ///    }
         ///
         /// </remarks>
@@ -197,7 +191,7 @@ namespace Library.API.Controllers
         /// <summary>
         /// Gets book with specified isbn.
         /// </summary>
-        /// <param name="ISBN"></param>
+        /// <param name="isbn"></param>
         /// <returns>Book with specified isbn</returns>
         /// <remarks>
         /// Sample request:
@@ -212,9 +206,9 @@ namespace Library.API.Controllers
         [Route("isbn-{isbn}")]
         [HttpGet]
         [Produces("application/json")]
-        public async Task<IActionResult> GetBookByISBNAsync(string ISBN)
+        public async Task<IActionResult> GetBookByISBNAsync(string isbn)
         {
-            var book = await _bookQueries.GetBookByISBNAsync(ISBN);
+            var book = await _bookQueries.GetBookByISBNAsync(isbn);
 
             if (book is not null)
                 return Ok(book);
