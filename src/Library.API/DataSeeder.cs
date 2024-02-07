@@ -1,7 +1,4 @@
-﻿using Library.Domain.Model;
-using Library.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
+﻿using Library.Infrastructure;
 
 // Data seeding was done in such way, because
 // for GET requests are used different db accesor - Dapper

@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
-using Library.API.Application.Commands;
 using Library.Domain.Model;
-using Library.Infrastructure.Repositories;
 
-namespace Library.API.Application.Validator
+namespace Library.API.Application.Commands.UpdateBookCommand
 {
-    public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
+    public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
     {
         private readonly IBookRepository _bookRepository;
-
-        public CreateBookCommandValidator(IBookRepository bookRepository) 
+        public UpdateBookCommandValidator(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
+
+            RuleFor(b => b.Id).NotEmpty();
 
             RuleFor(b => b.ISBN).NotEmpty()
                 .Length(10, 13)
@@ -31,14 +30,15 @@ namespace Library.API.Application.Validator
                 .LessThan(b => b.ReturningTime);
         }
 
-        private async Task<bool> BeUniqueISBN(CreateBookCommand command, string isbn, CancellationToken cancellationToken)
+        private async Task<bool> BeUniqueISBN(UpdateBookCommand command, string isbn, CancellationToken cancellationToken)
         {
             Book? book = await _bookRepository.GetAsyncByISBN(isbn);
 
+            //If book exsists with such ISBN, probably it is the same book
             if (book is not null)
-                return false;
-            
-            return true;
+                return book.Id == command.Id;
+            else
+                return true;
         }
     }
 }

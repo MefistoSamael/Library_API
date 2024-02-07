@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Library.API.Application.Commands;
 
-namespace Library.API.Application.Validator
+namespace Library.API.Application.Commands.DeleteBookCommand
 {
     public class DeleteBookCommandValidator : AbstractValidator<DeleteBookCommand>
     {
-        public DeleteBookCommandValidator() 
+        public DeleteBookCommandValidator()
         {
             RuleFor(b => b.Id).NotEmpty();
         }

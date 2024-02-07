@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Library.API.Application.Commands;
-using Library.API.Application.Queries;
+using Library.API.Application.Commands.CreateBookCommand;
 using Library.Domain.Model;
 
 namespace Library.API.Infrastructure.Mapper

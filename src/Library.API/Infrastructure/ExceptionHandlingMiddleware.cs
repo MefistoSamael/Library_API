@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.Logging;
-using System;
 using ValidationException = Library.API.Application.Exceptions.ValidationException;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Library.API.Infrastructure
 {

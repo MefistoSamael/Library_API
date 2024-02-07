@@ -1,15 +1,13 @@
-﻿using Azure;
-using Library.API.Application.Commands;
-using Library.API.Application.Queries;
-using Library.Domain.Exceptions;
+﻿using Library.API.Application.Commands.CreateBookCommand;
+using Library.API.Application.Commands.DeleteBookCommand;
+using Library.API.Application.Commands.UpdateBookCommand;
+using Library.API.Application.Queries.GetBookById;
+using Library.API.Application.Queries.GetBookByISBN;
+using Library.API.Application.Queries.GetBooksWithPagination;
 using Library.Domain.Model;
-using Library.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace Library.API.Controllers
 {
@@ -18,12 +16,11 @@ namespace Library.API.Controllers
     public class BookController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IBookQueries _bookQueries;
 
-        public BookController(IMediator mediator, IBookQueries bookQueries)
+        public BookController(IMediator mediator)
         {
             _mediator = mediator;
-            _bookQueries = bookQueries;
+            //_bookQueries = bookQueries;
         }
 
         /// <summary>
@@ -113,7 +110,7 @@ namespace Library.API.Controllers
         ///     DELETE /api/Book/
         ///     {
         ///         "id": "71",
-        ///    }
+        ///     }
         ///
         /// </remarks>
         /// <response code="200">Returns the deleted item</response>
@@ -135,24 +132,30 @@ namespace Library.API.Controllers
         }
 
         /// <summary>
-        /// Gets all books.
+        /// Gets books with pagination.
         /// </summary>
-        /// <returns>All books</returns>
+        /// <returns>Certain amount of books</returns>
         /// <remarks>
         /// Sample request:
         ///
         ///     Get /api/Book/
+        ///     {
+        ///         "pageSize": 3
+        ///
+        ///         "pageNumber": 1
+        ///     }
         ///
         /// </remarks>
-        /// <response code="200">Returns the all books</response>
+        /// <response code="200">Certain amount of books</response>
         /// <response code="404">If nothing found or some exception happened</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("{pageSize:int}/{pageNumber:int}")]
         [HttpGet]
         [Produces("application/json")]
-        public async Task<IActionResult> GetAllbooksAsync()
+        public async Task<IActionResult> GetAllbooksAsync(int pageSize, int pageNumber)
         {
-            var books = await _bookQueries.GetAllBooksAsync();
+            var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber));
 
             if (books is not null)
                 return Ok(books);
@@ -179,8 +182,8 @@ namespace Library.API.Controllers
         [HttpGet]
         [Produces("application/json")]
         public async Task<IActionResult> GetBookByIdAsync(int id)
-        { 
-            var book = await _bookQueries.GetBookByIdAsync(id);
+        {
+            var book = await _mediator.Send(new GetBookByIdQuery(id));
 
             if (book is not null)
                 return Ok(book);
@@ -208,7 +211,7 @@ namespace Library.API.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> GetBookByISBNAsync(string isbn)
         {
-            var book = await _bookQueries.GetBookByISBNAsync(isbn);
+            var book = await _mediator.Send(new GetBookByISBNQuery(isbn));
 
             if (book is not null)
                 return Ok(book);

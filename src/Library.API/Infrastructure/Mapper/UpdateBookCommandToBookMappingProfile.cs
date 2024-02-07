@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Library.API.Application.Commands;
+using Library.API.Application.Commands.UpdateBookCommand;
 using Library.Domain.Model;
 
 namespace Library.API.Infrastructure.Mapper
