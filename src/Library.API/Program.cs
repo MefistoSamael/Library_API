@@ -18,7 +18,7 @@ using MediatR;
 using Library.API.Infrastructure.Mapper;
 using Library.API.Infrastructure;
 using Microsoft.OpenApi.Models;
-using Template.Web.Infrastructure;
+
 
 namespace Library.API
 {
@@ -51,8 +51,6 @@ namespace Library.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapLogin();
 
             app.MapControllers();
 
