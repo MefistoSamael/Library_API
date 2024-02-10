@@ -1,13 +1,5 @@
-﻿using Library.Domain.Model;
-using Library.Domain.SeedWork;
-using Library.Infrastructure.Exceptions;
+﻿using Library.Domain.Models.BookModel;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Repositories
 {
@@ -39,7 +31,7 @@ namespace Library.Infrastructure.Repositories
 
         public async Task<Book?> GetAsyncById(int bookId)
         {
-            return await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.Id == bookId);
+            return await _context.Books.SingleOrDefaultAsync(b => b.Id == bookId);
         }
 
         public async Task<Book?> GetAsyncByISBN(string ISBN)

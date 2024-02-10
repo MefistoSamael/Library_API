@@ -11,6 +11,13 @@
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Infrastructure\Migrations\**" />
+	  <Content Remove="Infrastructure\Migrations\**" />
+	  <EmbeddedResource Remove="Infrastructure\Migrations\**" />
+	  <None Remove="Infrastructure\Migrations\**" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -31,6 +38,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
     <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Authors\Commands\AddBookToAuthor\" />
+    <Folder Include="Application\Authors\Commands\UpdateAuthorCommand\" />
+    <Folder Include="Infrastructure\Mapper\AuthorCommandsToAuthor\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

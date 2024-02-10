@@ -42,7 +42,7 @@ namespace Library.API
             using (var scope = app.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetService<LibraryContext>();
-                DataSeeder.SeedBooks(context!);
+                DataSeeder.SeedDB(context!);
             }
 
             app.Run();

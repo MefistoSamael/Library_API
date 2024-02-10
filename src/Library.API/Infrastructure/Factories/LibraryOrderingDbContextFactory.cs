@@ -16,7 +16,7 @@ namespace Library.API.Infrastructure.Factories
 
             var optionsBuilder = new DbContextOptionsBuilder<LibraryContext>();
 
-            optionsBuilder.UseSqlServer(config["ConnectionString"], sqlServerOptionsAction: o => o.MigrationsAssembly("Library.API"));
+            optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"], sqlServerOptionsAction: o => o.MigrationsAssembly("Library.API"));
 
             return new LibraryContext(optionsBuilder.Options);
         }

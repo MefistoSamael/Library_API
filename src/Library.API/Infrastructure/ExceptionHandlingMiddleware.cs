@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Library.API.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using ValidationException = Library.API.Application.Exceptions.ValidationException;
 
 namespace Library.API.Infrastructure
@@ -48,6 +49,19 @@ namespace Library.API.Infrastructure
                 };
 
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
+                await context.Response.WriteAsJsonAsync(problemDetails);
+            }
+            catch (DeleteModeRestrictViolation ex) 
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    Title = "Couldnt delete this entity",
+                    Detail = ex.Message
+                };
+
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(problemDetails);
             }
         }

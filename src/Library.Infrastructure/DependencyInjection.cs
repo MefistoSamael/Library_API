@@ -1,12 +1,9 @@
 ﻿using Library.Infrastructure;
+using Library.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNet.Identity;
-using System;
 using Microsoft.IdentityModel.Tokens;
-using Library.Infrastructure.Identity;
 
 
 

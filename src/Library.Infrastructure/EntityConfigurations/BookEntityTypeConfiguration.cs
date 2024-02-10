@@ -1,11 +1,6 @@
-﻿using Library.Domain.Model;
+﻿using Library.Domain.Models.BookModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.Infrastructure.EntityConfigurations
 {
@@ -14,7 +9,7 @@ namespace Library.Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<Book> bookConfiguration)
         {
             bookConfiguration.ToTable(t => t.HasCheckConstraint("ValidTime", "BorrowingTime < ReturningTime")
-                                            .HasName("books"));
+                                            .HasName("TimeValidation"));
 
             bookConfiguration.Property(b => b.Id).UseHiLo();
 
@@ -28,7 +23,10 @@ namespace Library.Infrastructure.EntityConfigurations
                                                    .IsRequired();
             bookConfiguration.Property(b => b.Genre).IsRequired();
             bookConfiguration.Property(b => b.Description).IsRequired();
-            bookConfiguration.Property(b => b.Author).IsRequired();
+            bookConfiguration.Property(b => b.AuthorId).IsRequired();
+            
+            bookConfiguration.HasOne(b => b.Author).WithMany(a => a.Books).OnDelete(DeleteBehavior.Restrict);
+            
             bookConfiguration.Property(b => b.BorrowingTime).IsRequired();
             bookConfiguration.Property(b => b.ReturningTime).IsRequired();
         }

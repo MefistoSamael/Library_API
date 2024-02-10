@@ -1,10 +1,10 @@
-﻿using Library.API.Application.Commands.CreateBookCommand;
-using Library.API.Application.Commands.DeleteBookCommand;
-using Library.API.Application.Commands.UpdateBookCommand;
-using Library.API.Application.Queries.GetBookById;
-using Library.API.Application.Queries.GetBookByISBN;
-using Library.API.Application.Queries.GetBooksWithPagination;
-using Library.Domain.Model;
+﻿using Library.API.Application.Books.Commands.CreateBookCommand;
+using Library.API.Application.Books.Commands.DeleteBookCommand;
+using Library.API.Application.Books.Commands.UpdateBookCommand;
+using Library.API.Application.Books.Queries.GetBookById;
+using Library.API.Application.Books.Queries.GetBookByISBN;
+using Library.API.Application.Books.Queries.GetBooksWithPagination;
+using Library.Domain.Models.BookModel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,6 @@ namespace Library.API.Controllers
         public BookController(IMediator mediator)
         {
             _mediator = mediator;
-            //_bookQueries = bookQueries;
         }
 
         /// <summary>
