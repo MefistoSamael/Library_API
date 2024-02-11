@@ -41,9 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Authors\Commands\AddBookToAuthor\" />
-    <Folder Include="Application\Authors\Commands\UpdateAuthorCommand\" />
-    <Folder Include="Infrastructure\Mapper\AuthorCommandsToAuthor\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

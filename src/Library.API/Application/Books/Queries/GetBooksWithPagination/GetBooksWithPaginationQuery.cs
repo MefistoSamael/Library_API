@@ -2,7 +2,7 @@
 
 namespace Library.API.Application.Books.Queries.GetBooksWithPagination
 {
-    public class GetBooksWithPaginationQuery : IRequest<BookDTO>
+    public class GetBooksWithPaginationQuery : IRequest<PaginatedBooks>
     {
         public int pageSize;
 

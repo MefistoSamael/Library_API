@@ -1,6 +1,8 @@
 ﻿using Library.API.Application.Authors.Commands.CreateAuthorCommand;
 using Library.API.Application.Authors.Commands.DeleteAuthorCommand;
+using Library.API.Application.Authors.Commands.UpdateAuthorCommand;
 using Library.API.Application.Authors.Queries.GetAllAuthors;
+using Library.API.Application.Common;
 using Library.Domain.Models.AuthorModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +23,17 @@ namespace Library.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAuthorAsync([FromBody] CreateAuthorCommand createAuthorCommand)
         {
-            Author author = await _mediator.Send(createAuthorCommand);
+            AuthorDTO author = await _mediator.Send(createAuthorCommand);
 
             return Ok(author);
         }
 
-        public async Task<IActionResult> UpdateAuthorAsync()
+        [HttpPut]
+        public async Task<IActionResult> UpdateAuthorAsync([FromBody] UpdateAuthorCommand updateAuthorCommand)
         {
-            throw new NotImplementedException();
+            AuthorDTO author = await _mediator.Send(updateAuthorCommand);
+
+            return Ok(author);
         }
 
         [HttpDelete]
@@ -42,13 +47,24 @@ namespace Library.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAuthors()
         {
-            var result = await _mediator.Send(new GetAllAuthorsQuery());
+            IEnumerable<AuthorDTO> result = await _mediator.Send(new GetAllAuthorsQuery());
+
             return Ok(result);    
         }
 
+        [HttpGet]
+        [Route("id-{id:int}")]
         public async Task<IActionResult> GetAuthor(int id)
         {
             throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
+        public async Task<IActionResult> GetPaginatedAuthors()
+        {
+            var result = await _mediator.Send(new GetAllAuthorsQuery());
+            return Ok(result);
         }
     }
 }

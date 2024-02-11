@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Library.API.Application.Books.Queries.GetBooksWithPagination
 {
-    public class GetBookWithPaginationQueryHandler : IRequestHandler<GetBooksWithPaginationQuery, BookDTO>
+    public class GetBookWithPaginationQueryHandler : IRequestHandler<GetBooksWithPaginationQuery, PaginatedBooks>
     {
         private string _connectionString = string.Empty;
         public GetBookWithPaginationQueryHandler(IConfiguration configuration)
@@ -14,7 +14,7 @@ namespace Library.API.Application.Books.Queries.GetBooksWithPagination
             _connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<BookDTO> Handle(GetBooksWithPaginationQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedBooks> Handle(GetBooksWithPaginationQuery request, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -39,7 +39,7 @@ namespace Library.API.Application.Books.Queries.GetBooksWithPagination
                 if (paginatedBooks.Count() == 0)
                     throw new KeyNotFoundException($"There are no queried entities");
 
-                return new BookDTO
+                return new PaginatedBooks
                 (
                     paginatedBooks,
                     currentPage,

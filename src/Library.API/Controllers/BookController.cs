@@ -133,33 +133,27 @@ namespace Library.API.Controllers
         /// <summary>
         /// Gets books with pagination.
         /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber"></param>
         /// <returns>Certain amount of books</returns>
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/Book/
-        ///     {
-        ///         "pageSize": 3
-        ///
-        ///         "pageNumber": 1
-        ///     }
+        ///     Get /api/Book/pageNumber-1/pageSize-20
         ///
         /// </remarks>
         /// <response code="200">Certain amount of books</response>
         /// <response code="404">If nothing found or some exception happened</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("{pageSize:int}/{pageNumber:int}")]
+        [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
         [HttpGet]
         [Produces("application/json")]
         public async Task<IActionResult> GetAllbooksAsync(int pageSize, int pageNumber)
         {
             var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber));
 
-            if (books is not null)
-                return Ok(books);
-            else
-                return NotFound();
+            return Ok(books);
         }
 
         /// <summary>
@@ -184,10 +178,7 @@ namespace Library.API.Controllers
         {
             var book = await _mediator.Send(new GetBookByIdQuery(id));
 
-            if (book is not null)
-                return Ok(book);
-            else
-                return NotFound();
+            return Ok(book);
         }
 
         /// <summary>
@@ -212,10 +203,7 @@ namespace Library.API.Controllers
         {
             var book = await _mediator.Send(new GetBookByISBNQuery(isbn));
 
-            if (book is not null)
-                return Ok(book);
-            else
-                return NotFound();
+           return Ok(book);
         }
     }
 }

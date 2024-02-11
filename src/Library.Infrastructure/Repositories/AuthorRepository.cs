@@ -30,7 +30,7 @@ namespace Library.Infrastructure.Repositories
 
         public Task<Author?> GetAsyncById(int authorId)
         {
-            return _context.Authors.Where(a => a.Id == authorId).Include(a => a.Books).FirstOrDefaultAsync();
+            return _context.Authors.AsNoTracking().Where(a => a.Id == authorId).Include(a => a.Books).FirstOrDefaultAsync();
         }
 
         public async Task<Author> UpdateAsync(Author author)

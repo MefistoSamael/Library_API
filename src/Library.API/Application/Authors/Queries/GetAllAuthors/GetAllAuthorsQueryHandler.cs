@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Library.API.Application.Common;
 using Library.Domain.Models.AuthorModel;
 using MediatR;
 using Microsoft.Data.SqlClient;
@@ -25,7 +26,7 @@ namespace Library.API.Application.Authors.Queries.GetAllAuthors
                     "b.Description, b.AuthorId as AuthorId, " +
                     "b.BorrowingTime, b.ReturningTime, a.Name as AuthorName " +
                     "FROM authors a " +
-                    "JOIN books b " +
+                    "LEFT JOIN books b " +
                     "ON a.Id = b.AuthorId";
 
                 // This whole tricky construction was created, to

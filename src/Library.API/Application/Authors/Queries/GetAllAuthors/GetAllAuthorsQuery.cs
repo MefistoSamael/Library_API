@@ -1,4 +1,5 @@
-﻿using Library.Domain.Models.AuthorModel;
+﻿using Library.API.Application.Common;
+using Library.Domain.Models.AuthorModel;
 using MediatR;
 
 namespace Library.API.Application.Authors.Queries.GetAllAuthors

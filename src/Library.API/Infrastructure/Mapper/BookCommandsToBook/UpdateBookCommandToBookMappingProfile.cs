@@ -9,7 +9,7 @@ namespace Library.API.Infrastructure.Mapper.BookCommandsToBook
         public UpdateBookCommandToBookMappingProfile()
         {
             CreateMap<UpdateBookCommand, Book>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id)); ;
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
     }
 }
