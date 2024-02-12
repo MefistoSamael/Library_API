@@ -6,9 +6,9 @@ namespace Library.API.Application.Books.Queries.GetBooksWithPagination
     {
         public GetBookWithPaginationQueryValidator()
         {
-            RuleFor(q => q.pageNumber).GreaterThan(0);
+            RuleFor(q => q.pageNumber).GreaterThan(0).NotEmpty();
 
-            RuleFor(q => q.pageSize).GreaterThan(0);
+            RuleFor(q => q.pageSize).GreaterThan(0).NotEmpty();
         }
     }
 }

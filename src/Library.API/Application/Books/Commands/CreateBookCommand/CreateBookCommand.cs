@@ -1,9 +1,10 @@
-﻿using Library.Domain.Models.BookModel;
+﻿using Library.API.Application.Common;
+using Library.Domain.Models.BookModel;
 using MediatR;
 
 namespace Library.API.Application.Books.Commands.CreateBookCommand
 {
-    public class CreateBookCommand : IRequest<Book>
+    public class CreateBookCommand : IRequest<BookDTO>
     {
         public string ISBN { get; set; }
 

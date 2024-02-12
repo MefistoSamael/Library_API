@@ -1,19 +1,19 @@
-﻿using Dapper;
-using Library.API.Application.Common;
+﻿using Library.API.Application.Common;
 using MediatR;
+using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace Library.API.Application.Authors.Queries.GetAllAuthors
+namespace Library.API.Application.Authors.Queries.GetAuthorById
 {
-    public class GetAllAuthorsQueryHandler : IRequestHandler<GetAllAuthorsQuery, IEnumerable<AuthorDTO>>
+    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDTO>
     {
         private readonly string _connectionString;
-
-        public GetAllAuthorsQueryHandler(IConfiguration configuration)
+        public GetAuthorByIdQueryHandler(IConfiguration configuration) 
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException(nameof(_connectionString));
+            _connectionString = configuration.GetConnectionString("DefaultConnection") ??
+                throw new ArgumentNullException(nameof(_connectionString));
         }
-        public async Task<IEnumerable<AuthorDTO>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
+        public async Task<AuthorDTO> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -26,13 +26,14 @@ namespace Library.API.Application.Authors.Queries.GetAllAuthors
                     "b.BorrowingTime, b.ReturningTime, a.Name as AuthorName " +
                     "FROM authors a " +
                     "LEFT JOIN books b " +
-                    "ON a.Id = b.AuthorId";
+                    "ON a.Id = b.AuthorId " +
+                    $"WHERE a.Id = {request.Id}";
 
                 // This whole tricky construction was created, to
                 // extract distinct authors with their books
-                Dictionary<int,AuthorDTO> authorsDict = new Dictionary<int, AuthorDTO>();
+                Dictionary<int, AuthorDTO> authorsDict = new Dictionary<int, AuthorDTO>();
 
-                await connection.QueryAsync<AuthorDTO, BookDTO, AuthorDTO> 
+                await connection.QueryAsync<AuthorDTO, BookDTO, AuthorDTO>
                     (sql, (authorDTO, bookDTO) =>
                     {
                         if (!authorsDict.TryGetValue(authorDTO.AuthorId, out AuthorDTO? authorEntry))
@@ -47,11 +48,12 @@ namespace Library.API.Application.Authors.Queries.GetAllAuthors
                         return authorEntry;
                     }, splitOn: "BookId");
 
-                IEnumerable<AuthorDTO> authors = authorsDict.Values;
-                if (authors.Count() == 0)
-                    throw new KeyNotFoundException($"There are no queried entities");
+                AuthorDTO? author = authorsDict.Values.SingleOrDefault();
 
-                return authors;
+                if (author is null)
+                    throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
+
+                return author;
             }
         }
     }

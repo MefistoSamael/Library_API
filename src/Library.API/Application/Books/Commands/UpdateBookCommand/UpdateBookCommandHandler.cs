@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using Library.API.Application.Common;
 using Library.Domain.Models.BookModel;
 using MediatR;
 
 namespace Library.API.Application.Books.Commands.UpdateBookCommand
 {
-    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book>
+    public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookDTO>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -16,7 +17,7 @@ namespace Library.API.Application.Books.Commands.UpdateBookCommand
             _mapper = mapper;
         }
 
-        public async Task<Book> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        public async Task<BookDTO> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
             Book? entity = await _bookRepository.GetAsyncById(request.Id);
 
@@ -25,7 +26,9 @@ namespace Library.API.Application.Books.Commands.UpdateBookCommand
 
             Book book = _mapper.Map<Book>(request);
 
-            return await _bookRepository.UpdateAsync(book);
+            Book result = await _bookRepository.UpdateAsync(book);
+
+            return _mapper.Map<BookDTO>(result);
         }
     }
 }

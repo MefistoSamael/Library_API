@@ -1,22 +1,26 @@
-﻿using Dapper;
-using Library.API.Application.Common;
+﻿using Library.API.Application.Common;
 using MediatR;
+using Dapper;
 using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace Library.API.Application.Authors.Queries.GetAllAuthors
+namespace Library.API.Application.Authors.Queries.GetPaginatedAuthors
 {
-    public class GetAllAuthorsQueryHandler : IRequestHandler<GetAllAuthorsQuery, IEnumerable<AuthorDTO>>
+    public class GetPaginatedAuthorsQueryHandler : IRequestHandler<GetPaginatedAuthorsQuery, PaginatedResult<AuthorDTO>>
     {
         private readonly string _connectionString;
 
-        public GetAllAuthorsQueryHandler(IConfiguration configuration)
+        public GetPaginatedAuthorsQueryHandler(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException(nameof(_connectionString));
         }
-        public async Task<IEnumerable<AuthorDTO>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
+
+        public async Task<PaginatedResult<AuthorDTO>> Handle(GetPaginatedAuthorsQuery request, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
+                //Getting all authors
+
                 // Because of splitting by BookId, some values in select
                 // are repeated
                 var sql =
@@ -30,9 +34,9 @@ namespace Library.API.Application.Authors.Queries.GetAllAuthors
 
                 // This whole tricky construction was created, to
                 // extract distinct authors with their books
-                Dictionary<int,AuthorDTO> authorsDict = new Dictionary<int, AuthorDTO>();
+                Dictionary<int, AuthorDTO> authorsDict = new Dictionary<int, AuthorDTO>();
 
-                await connection.QueryAsync<AuthorDTO, BookDTO, AuthorDTO> 
+                await connection.QueryAsync<AuthorDTO, BookDTO, AuthorDTO>
                     (sql, (authorDTO, bookDTO) =>
                     {
                         if (!authorsDict.TryGetValue(authorDTO.AuthorId, out AuthorDTO? authorEntry))
@@ -48,10 +52,26 @@ namespace Library.API.Application.Authors.Queries.GetAllAuthors
                     }, splitOn: "BookId");
 
                 IEnumerable<AuthorDTO> authors = authorsDict.Values;
-                if (authors.Count() == 0)
+
+
+                // Getting paginated authors
+                int count = authors.Count();
+                if (count == 0)
                     throw new KeyNotFoundException($"There are no queried entities");
 
-                return authors;
+                int totalPages = (int)Math.Ceiling(count / (double)request.PageSize);
+
+                int currentPage = request.PageNumber > totalPages ? totalPages : request.PageNumber;
+
+                authors = authors.Skip((currentPage - 1) * request.PageSize)
+                    .Take(request.PageSize);
+
+                return new PaginatedResult<AuthorDTO>
+                {
+                    collection = authors,
+                    currentPage = currentPage,
+                    totalPages = totalPages
+                };
             }
         }
     }

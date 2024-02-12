@@ -1,11 +1,12 @@
 ﻿using Dapper;
+using Library.API.Application.Common;
 using Library.Domain.Models.BookModel;
 using MediatR;
 using Microsoft.Data.SqlClient;
 
 namespace Library.API.Application.Books.Queries.GetBookById
 {
-    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, Book>
+    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, BookDTO>
     {
         private string _connectionString = string.Empty;
         public GetBookByIdQueryHandler(IConfiguration configuration)
@@ -14,15 +15,21 @@ namespace Library.API.Application.Books.Queries.GetBookById
             _connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<Book> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BookDTO> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                var sql = $"SELECT * FROM books WHERE books.id = {request.id}";
+                var sql = "SELECT a.Id as AuthorId, a.Name as AuthorName, " +
+                    "b.Id as BookId, b.ISBN, b.Name as BookName, b.Genre, " +
+                    "b.Description, b.AuthorId as AuthorId, " +
+                    "b.BorrowingTime, b.ReturningTime, a.Name as AuthorName " +
+                    "FROM books b " +
+                    "JOIN authors a ON b.AuthorId = a.Id " +
+                    $"WHERE b.Id = {request.id}";
 
-                Book? result = await connection.QuerySingleOrDefaultAsync<Book>(sql);
+                BookDTO? result = await connection.QuerySingleOrDefaultAsync<BookDTO>(sql);
 
                 if (result is null)
                     throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.id}");

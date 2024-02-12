@@ -8,12 +8,9 @@ namespace Library.API.Application.Books.Commands.DeleteBookCommand
     {
         private readonly IBookRepository _bookRepository;
 
-        private readonly IMapper _mapper;
-
-        public DeleteBookCommandHandler(IBookRepository bookRepository, IMapper mapper)
+        public DeleteBookCommandHandler(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
-            _mapper = mapper;
         }
 
         public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)

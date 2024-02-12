@@ -1,9 +1,10 @@
-﻿using Library.Domain.Models.BookModel;
+﻿using Library.API.Application.Common;
+using Library.Domain.Models.BookModel;
 using MediatR;
 
 namespace Library.API.Application.Books.Commands.UpdateBookCommand
 {
-    public class UpdateBookCommand : IRequest<Book>
+    public class UpdateBookCommand : IRequest<BookDTO>
     {
 
         public int Id { get; set; }

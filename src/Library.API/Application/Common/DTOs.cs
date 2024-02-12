@@ -37,15 +37,8 @@ namespace Library.API.Application.Common
 
     public class PaginatedResult<T>
     {
-        public IEnumerable<T> collection { get; set; }
+        public required IEnumerable<T> collection { get; set; }
         public int currentPage { get; set; }
         public int totalPages { get; set; }
-
-        public PaginatedResult(IEnumerable<T> collection, int currentPage, int totalPages)
-        {
-            this.collection = collection;
-            this.currentPage = currentPage;
-            this.totalPages = totalPages;
-        }
     }
 }

@@ -4,6 +4,7 @@ using Library.API.Application.Books.Commands.UpdateBookCommand;
 using Library.API.Application.Books.Queries.GetBookById;
 using Library.API.Application.Books.Queries.GetBookByISBN;
 using Library.API.Application.Books.Queries.GetBooksWithPagination;
+using Library.API.Application.Common;
 using Library.Domain.Models.BookModel;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,19 +43,20 @@ namespace Library.API.Controllers
         ///    }
         ///
         /// </remarks>
-        /// <response code="200">Returns the newly created item</response>
-        /// <response code="400">If request body has incorrect values</response>
-        /// <response code="401">If unauthorized request happend</response>
+        /// <response code="200"> Returns the newly created item</response>
+        /// <response code="400"> If request body has incorrect values</response>
+        /// <response code="401"> If unauthorized request happend</response>
+        /// <response code="500"> If somethin went wrong</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [Produces("application/json")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand)
         {
-            Book result = await _mediator.Send(createBookCommand);
+            BookDTO result = await _mediator.Send(createBookCommand);
 
             return Ok(result);
         }
@@ -67,14 +69,14 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /api/Book/
+        ///     PUT /api/Book/
         ///     {
         ///         "Id": "71"
         ///         "ISBN": "1234567701",
         ///         "Name": "dz",
         ///         "Genre": "zz",
         ///         "Description": "zz",
-        ///         "Author": "zz",
+        ///         "AuthorId": "6",
         ///         "BorrowingTime": "2023-01-01T00:00:00",
         ///         "ReturningTime": "2023-02-02T00:00:00"
         ///    }
@@ -83,17 +85,19 @@ namespace Library.API.Controllers
         /// <response code="200">Returns the updated item</response>
         /// <response code="400">If request body has incorrect values</response>
         /// <response code="401">If unauthorized request happend</response>
+        /// <response code="404"> If entity wasnt found</response>
         /// <response code="500">If request failed due to server error</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
-        [Authorize]
+        //[Authorize]
         [Produces("application/json")]
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand)
         {
-            Book result = await _mediator.Send(updateBookCommand);
+            BookDTO result = await _mediator.Send(updateBookCommand);
 
             return Ok(result);
         }
@@ -115,14 +119,15 @@ namespace Library.API.Controllers
         /// <response code="200">Returns the deleted item</response>
         /// <response code="400">If request body has incorrect values</response>
         /// <response code="401"> If unauthorized request happend</response>
+        /// <response code="404"> If entity wasnt found</response>
         /// <response code="500">If request failed due to server error</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete]
-        [Authorize]
-        [Produces("application/json")]
+        //[Authorize]
         public async Task<IActionResult> DelteBookAsync([FromBody] DeleteBookCommand deleteBookCommand)
         {
             await _mediator.Send(deleteBookCommand);

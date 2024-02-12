@@ -1,9 +1,10 @@
-﻿using Library.Domain.Models.BookModel;
+﻿using Library.API.Application.Common;
+using Library.Domain.Models.BookModel;
 using MediatR;
 
 namespace Library.API.Application.Books.Queries.GetBookByISBN
 {
-    public class GetBookByISBNQuery : IRequest<Book>
+    public class GetBookByISBNQuery : IRequest<BookDTO>
     {
         public string isbn;
 
