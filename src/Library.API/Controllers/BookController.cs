@@ -106,7 +106,6 @@ namespace Library.API.Controllers
         /// Deletes a book.
         /// </summary>
         /// <param name="deleteBookCommand"></param>
-        /// <returns>A deleted book</returns>
         /// <remarks>
         /// Sample request:
         ///
@@ -116,7 +115,7 @@ namespace Library.API.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <response code="200">Returns the deleted item</response>
+        /// <response code="200">If request processed correctly</response>
         /// <response code="400">If request body has incorrect values</response>
         /// <response code="401"> If unauthorized request happend</response>
         /// <response code="404"> If entity wasnt found</response>
