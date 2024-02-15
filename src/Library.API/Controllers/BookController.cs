@@ -52,7 +52,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [Produces("application/json")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand)
         {
@@ -93,7 +93,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
-        //[Authorize]
+        [Authorize]
         [Produces("application/json")]
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand)
         {
@@ -127,7 +127,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> DelteBookAsync([FromBody] DeleteBookCommand deleteBookCommand)
         {
             await _mediator.Send(deleteBookCommand);

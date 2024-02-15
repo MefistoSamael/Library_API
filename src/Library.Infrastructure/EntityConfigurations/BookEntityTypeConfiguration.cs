@@ -25,7 +25,8 @@ namespace Library.Infrastructure.EntityConfigurations
             bookConfiguration.Property(b => b.Description).IsRequired();
             bookConfiguration.Property(b => b.AuthorId).IsRequired();
             
-            bookConfiguration.HasOne(b => b.Author).WithMany(a => a.Books).OnDelete(DeleteBehavior.Restrict);
+            bookConfiguration.HasOne(b => b.Author).WithMany(a => a.Books).HasForeignKey(b => b.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
             
             bookConfiguration.Property(b => b.BorrowingTime).IsRequired();
             bookConfiguration.Property(b => b.ReturningTime).IsRequired();

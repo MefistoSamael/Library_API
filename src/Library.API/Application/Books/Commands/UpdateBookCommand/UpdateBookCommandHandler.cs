@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library.API.Application.Common;
+using Library.Domain.Models.AuthorModel;
 using Library.Domain.Models.BookModel;
 using MediatR;
 
@@ -11,10 +12,13 @@ namespace Library.API.Application.Books.Commands.UpdateBookCommand
 
         private readonly IMapper _mapper;
 
-        public UpdateBookCommandHandler(IBookRepository bookRepository, IMapper mapper)
+        private readonly IAuthorRepository _authorRepository;
+
+        public UpdateBookCommandHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
         {
             _bookRepository = bookRepository;
             _mapper = mapper;
+            _authorRepository = authorRepository;
         }
 
         public async Task<BookDTO> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
@@ -22,6 +26,11 @@ namespace Library.API.Application.Books.Commands.UpdateBookCommand
             Book? entity = await _bookRepository.GetAsyncById(request.Id);
 
             if (entity is null)
+                throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
+
+            Author? author = await _authorRepository.GetAsyncById(request.AuthorId);
+
+            if (author is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
 
             Book book = _mapper.Map<Book>(request);

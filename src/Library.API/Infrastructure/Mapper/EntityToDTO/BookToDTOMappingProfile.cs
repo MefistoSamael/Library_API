@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Library.API.Application.Common;
+using Library.Domain.Models.AuthorModel;
 using Library.Domain.Models.BookModel;
 using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
 
 namespace Library.API.Infrastructure.Mapper.EntityToDTO
 {

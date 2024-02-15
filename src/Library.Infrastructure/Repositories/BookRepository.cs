@@ -43,6 +43,8 @@ namespace Library.Infrastructure.Repositories
 
         public async Task<Book> UpdateAsync(Book book)
         {
+            _context.Authors.Where(a => a.Id == book.AuthorId).Load();
+
             var result = _context.Update(book).Entity;
 
             await _context.SaveChangesAsync();

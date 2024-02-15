@@ -13,7 +13,7 @@ namespace Library.Domain.Models.BookModel
 
         public string Description { get; private set; }
 
-        public Author Author { get; private set; }
+        public Author Author { get; set; }
 
         public int AuthorId { get; private set; }
 
