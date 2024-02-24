@@ -1,11 +1,10 @@
-﻿using Library.API.Application.Authors.Commands.CreateAuthorCommand;
-using Library.API.Application.Authors.Commands.DeleteAuthorCommand;
-using Library.API.Application.Authors.Commands.UpdateAuthorCommand;
-using Library.API.Application.Authors.Queries.GetAllAuthors;
-using Library.API.Application.Authors.Queries.GetAuthorById;
-using Library.API.Application.Authors.Queries.GetPaginatedAuthors;
-using Library.API.Application.Common;
-using Library.Domain.Models.AuthorModel;
+﻿using Library.Application.Authors.Commands.CreateAuthorCommand;
+using Library.Application.Authors.Commands.DeleteAuthorCommand;
+using Library.Application.Authors.Commands.UpdateAuthorCommand;
+using Library.Application.Authors.Queries.GetAllAuthors;
+using Library.Application.Authors.Queries.GetAuthorById;
+using Library.Application.Authors.Queries.GetPaginatedAuthors;
+using Library.Application.Common.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Produces("application/json")]
+        
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateAuthorAsync([FromBody] CreateAuthorCommand createAuthorCommand)
@@ -80,7 +79,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Produces("application/json")]
+        
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateAuthorAsync([FromBody] UpdateAuthorCommand updateAuthorCommand)
@@ -144,7 +143,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Produces("application/json")]
+        
         [HttpGet]
         public async Task<IActionResult> GetAllAuthors()
         {
@@ -174,7 +173,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Produces("application/json")]
+        
         [HttpGet]
         [Route("id-{id:int}")]
         public async Task<IActionResult> GetAuthor(int id)
@@ -206,7 +205,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Produces("application/json")]
+        
         [HttpGet]
         [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
         public async Task<IActionResult> GetPaginatedAuthors(int pageNumber, int pageSize)

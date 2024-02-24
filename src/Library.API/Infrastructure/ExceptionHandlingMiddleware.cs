@@ -1,6 +1,6 @@
-﻿using Library.API.Application.Exceptions;
+﻿using Library.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using ValidationException = Library.API.Application.Exceptions.ValidationException;
+using ValidationException = Library.Application.Common.Exceptions.ValidationException;
 
 namespace Library.API.Infrastructure
 {

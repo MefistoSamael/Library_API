@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 
 
-namespace Library.API.Application
+namespace Library.Application
 {
     public static class DependencyInjection
     {

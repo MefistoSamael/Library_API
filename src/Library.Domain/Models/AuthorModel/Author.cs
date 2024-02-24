@@ -21,11 +21,5 @@ namespace Library.Domain.Models.AuthorModel
             Name = name;
             Books = new List<Book>();
         }
-
-        public void AddBook(Book book)
-        {
-            if (!Books.Contains(book))
-                Books.Add(book);
-        }
     }
 }

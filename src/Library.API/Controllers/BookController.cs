@@ -1,11 +1,10 @@
-﻿using Library.API.Application.Books.Commands.CreateBookCommand;
-using Library.API.Application.Books.Commands.DeleteBookCommand;
-using Library.API.Application.Books.Commands.UpdateBookCommand;
-using Library.API.Application.Books.Queries.GetBookById;
-using Library.API.Application.Books.Queries.GetBookByISBN;
-using Library.API.Application.Books.Queries.GetBooksWithPagination;
-using Library.API.Application.Common;
-using Library.Domain.Models.BookModel;
+﻿using Library.Application.Books.Commands.CreateBookCommand;
+using Library.Application.Books.Commands.DeleteBookCommand;
+using Library.Application.Books.Commands.UpdateBookCommand;
+using Library.Application.Books.Queries.GetBookById;
+using Library.Application.Books.Queries.GetBookByISBN;
+using Library.Application.Books.Queries.GetBooksWithPagination;
+using Library.Application.Common.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +52,6 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         [Authorize]
-        [Produces("application/json")]
         public async Task<IActionResult> CreateBookAsync([FromBody] CreateBookCommand createBookCommand)
         {
             BookDTO result = await _mediator.Send(createBookCommand);
@@ -94,7 +92,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut]
         [Authorize]
-        [Produces("application/json")]
+        
         public async Task<IActionResult> UpdateBookAsync([FromBody] UpdateBookCommand updateBookCommand)
         {
             BookDTO result = await _mediator.Send(updateBookCommand);
@@ -152,7 +150,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
         [HttpGet]
-        [Produces("application/json")]
+        
         public async Task<IActionResult> GetAllbooksAsync(int pageSize, int pageNumber)
         {
             var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber));
@@ -177,7 +175,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("id-{id:int}")]
         [HttpGet]
-        [Produces("application/json")]
+        
         public async Task<IActionResult> GetBookByIdAsync(int id)
         {
             var book = await _mediator.Send(new GetBookByIdQuery(id));
@@ -202,7 +200,7 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("isbn-{isbn}")]
         [HttpGet]
-        [Produces("application/json")]
+        
         public async Task<IActionResult> GetBookByISBNAsync(string isbn)
         {
             var book = await _mediator.Send(new GetBookByISBNQuery(isbn));

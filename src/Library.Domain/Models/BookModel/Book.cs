@@ -23,7 +23,7 @@ namespace Library.Domain.Models.BookModel
 
 #pragma warning disable CS8618 
         protected Book() { }
-#pragma warning restore CS8618 
+
 
         public Book(string iSBN, string name, string genre, string description, int AuthorId, DateTime borrowingTime, DateTime returningTime)
         {
@@ -42,6 +42,8 @@ namespace Library.Domain.Models.BookModel
 
             ReturningTime = returningTime;
         }
+
+#pragma warning restore CS8618
 
     }
 }

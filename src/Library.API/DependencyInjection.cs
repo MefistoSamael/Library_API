@@ -1,5 +1,7 @@
-﻿using Library.Domain.Models.AuthorModel;
+﻿using Library.Application.Common.Identity;
+using Library.Domain.Models.AuthorModel;
 using Library.Domain.Models.BookModel;
+using Library.Infrastructure.Identity;
 using Library.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -43,6 +45,7 @@ namespace Library.API
 
             services.AddScoped(typeof(IBookRepository), typeof(BookRepository));
             services.AddScoped(typeof(IAuthorRepository), typeof(AuthorRepository));
+            services.AddScoped(typeof(IIdentityService), typeof(IdentitiyService));
             
             return services;
         }
