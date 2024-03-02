@@ -11,5 +11,7 @@
         Task<Book?> GetAsyncById(int bookId);
 
         Task<Book?> GetAsyncByISBN(string ISBN);
+
+        Task<IEnumerable<Book>> GetPaginatedBooksAsync(int pageNumber, int pageSize);
     }
 }

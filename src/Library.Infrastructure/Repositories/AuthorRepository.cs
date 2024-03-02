@@ -1,4 +1,5 @@
-﻿using Library.Domain.Models.AuthorModel;
+﻿using Azure.Core;
+using Library.Domain.Models.AuthorModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Repositories
@@ -59,6 +60,18 @@ namespace Library.Infrastructure.Repositories
                     _context.Dispose();
                 }
             }
+        }
+
+        public async Task<IEnumerable<Author>> GetAllAsync()
+        {
+            return await _context.Authors.Include(a => a.Books).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Author>> GetPaginatedAuthors(int pageNumber, int pageSize)
+        {
+            return await _context.Authors
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .Include(a => a.Books).ToListAsync();
         }
     }
 }

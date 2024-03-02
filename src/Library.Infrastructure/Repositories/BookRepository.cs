@@ -1,5 +1,6 @@
 ﻿using Library.Domain.Models.BookModel;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Library.Infrastructure.Repositories
 {
@@ -33,12 +34,24 @@ namespace Library.Infrastructure.Repositories
 
         public async Task<Book?> GetAsyncById(int bookId)
         {
-            return await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.Id == bookId);
+            var book = await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.Id == bookId);
+            if (book is not null)
+            {
+                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == bookId).Single();
+            }
+
+            return book;
         }
 
         public async Task<Book?> GetAsyncByISBN(string ISBN)
         {
-            return await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.ISBN == ISBN);
+            var book = await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.ISBN == ISBN);
+            if (book is not null)
+            {
+                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == book.Id).Single();
+            }
+
+            return book;
         }
 
         public async Task<Book> UpdateAsync(Book book)
@@ -51,6 +64,13 @@ namespace Library.Infrastructure.Repositories
 
             return result;
 
+        }
+
+        public async Task<IEnumerable<Book>> GetPaginatedBooksAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Books
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .Include(b => b.Author).ToListAsync();
         }
 
         public void Dispose()

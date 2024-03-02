@@ -36,6 +36,6 @@
     {
         public required IEnumerable<T> collection { get; set; }
         public int currentPage { get; set; }
-        public int totalPages { get; set; }
+        //public int totalPages { get; set; }
     }
 }
