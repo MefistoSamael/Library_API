@@ -79,12 +79,12 @@ namespace Library.Infrastructure.Repositories.QueryRepostirory
                     "b.Id as BookId, b.ISBN, b.Name as BookName, b.Genre, " +
                     "b.Description, b.AuthorId as AuthorId, " +
                     "b.BorrowingTime, b.ReturningTime, a.Name as AuthorName " +
-                    "FROM authors a " +
-                    "LEFT JOIN books b " +
-                    "ON a.Id = b.AuthorId " +
-                    "ORDER BY a.Id " +
+                    "FROM (select Id, Name from authors " +
+                    "ORDER BY Id " +
                     $"OFFSET {(pageNumber - 1) * pageSize} ROWS " +
-                    $"FETCH NEXT {pageSize} ROWS ONLY";
+                    $"FETCH NEXT {pageSize} ROWS ONLY) a " +
+                    "LEFT JOIN books b " +
+                    "ON a.Id = b.AuthorId ";
 
                 // This whole tricky construction was created, to
                 // extract distinct authors with their books
