@@ -36,7 +36,7 @@ namespace Library.API.Controllers
         ///         "Name": "dz",
         ///         "Genre": "zz",
         ///         "Description": "zz",
-        ///         "Author": "zz",
+        ///         "AuthorId": "1",
         ///         "BorrowingTime": "2023-01-01T00:00:00",
         ///         "ReturningTime": "2023-02-02T00:00:00"
         ///    }

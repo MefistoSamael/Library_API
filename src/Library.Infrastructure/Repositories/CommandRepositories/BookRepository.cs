@@ -36,7 +36,7 @@ namespace Library.Infrastructure.Repositories.CommandRepositories
             var book = await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.Id == bookId);
             if (book is not null)
             {
-                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == bookId).Single();
+                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == book.AuthorId).Single();
             }
 
             return book;
@@ -47,7 +47,7 @@ namespace Library.Infrastructure.Repositories.CommandRepositories
             var book = await _context.Books.AsNoTracking().SingleOrDefaultAsync(b => b.ISBN == ISBN);
             if (book is not null)
             {
-                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == book.Id).Single();
+                book.Author = _context.Authors.AsNoTracking().Where(a => a.Id == book.AuthorId).SingleOrDefault()!;
             }
 
             return book;
