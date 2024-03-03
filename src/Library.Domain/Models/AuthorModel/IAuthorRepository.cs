@@ -8,10 +8,6 @@
 
         Task DeleteAsync(Author author);
 
-        Task<Author?> GetAsyncById(int authorId);
-
-        Task<IEnumerable<Author>> GetAllAsync();
-
-        Task<IEnumerable<Author>> GetPaginatedAuthors(int pageNumber, int pageSize);
+        Task<Author?> GetByIdAsync(int authorId);
     }
 }

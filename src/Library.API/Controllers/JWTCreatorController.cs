@@ -1,9 +1,5 @@
 ﻿using Library.Application.Common.Identity;
-using Library.Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Library.API.Controllers
 {

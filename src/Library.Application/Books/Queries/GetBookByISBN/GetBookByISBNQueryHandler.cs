@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using Dapper;
 using Library.Application.Common.Models;
 using Library.Domain.Models.BookModel;
-using Library.Domain.SeedWork;
 using MediatR;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace Library.Application.Books.Queries.GetBookByISBN
 {
@@ -21,7 +17,7 @@ namespace Library.Application.Books.Queries.GetBookByISBN
 
         public async Task<BookDTO> Handle(GetBookByISBNQuery request, CancellationToken cancellationToken)
         {
-            var book = await _bookRepository.GetAsyncByISBN(request.isbn);
+            var book = await _bookRepository.GetByISBNAsync(request.isbn);
 
             if (book is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.isbn}");

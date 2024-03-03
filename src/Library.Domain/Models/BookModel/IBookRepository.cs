@@ -8,10 +8,8 @@
 
         Task DeleteAsync(Book book);
 
-        Task<Book?> GetAsyncById(int bookId);
+        Task<Book?> GetByIdAsync(int bookId);
 
-        Task<Book?> GetAsyncByISBN(string ISBN);
-
-        Task<IEnumerable<Book>> GetPaginatedBooksAsync(int pageNumber, int pageSize);
+        Task<Book?> GetByISBNAsync(string ISBN);
     }
 }

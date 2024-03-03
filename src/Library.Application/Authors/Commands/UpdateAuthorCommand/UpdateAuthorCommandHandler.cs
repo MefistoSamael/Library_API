@@ -17,7 +17,7 @@ namespace Library.Application.Authors.Commands.UpdateAuthorCommand
         }
         public async Task<AuthorDTO> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
-            Author? entity = await _repository.GetAsyncById(request.Id);
+            Author? entity = await _repository.GetByIdAsync(request.Id);
 
             if (entity is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");

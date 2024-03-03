@@ -1,7 +1,6 @@
 ﻿using Library.Application.Authors.Commands.CreateAuthorCommand;
 using Library.Application.Authors.Commands.DeleteAuthorCommand;
 using Library.Application.Authors.Commands.UpdateAuthorCommand;
-using Library.Application.Authors.Queries.GetAllAuthors;
 using Library.Application.Authors.Queries.GetAuthorById;
 using Library.Application.Authors.Queries.GetPaginatedAuthors;
 using Library.Application.Common.Models;
@@ -44,7 +43,6 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateAuthorAsync([FromBody] CreateAuthorCommand createAuthorCommand)
@@ -79,7 +77,6 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateAuthorAsync([FromBody] UpdateAuthorCommand updateAuthorCommand)
@@ -124,35 +121,6 @@ namespace Library.API.Controllers
         }
 
         /// <summary>
-        /// Gets all authors.
-        /// </summary>
-        /// <returns>A all authors with their books</returns>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     Get /api/author/
-        ///     
-        ///     
-        ///     
-        ///     
-        ///
-        /// </remarks>
-        /// <response code="200"> If get was succesfull</response>
-        /// <response code="404"> If entities wasnt found</response>
-        /// <response code="500"> If request failed due to server error</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
-        [HttpGet]
-        public async Task<IActionResult> GetAllAuthors()
-        {
-            IEnumerable<AuthorDTO> result = await _mediator.Send(new GetAllAuthorsQuery());
-
-            return Ok(result);    
-        }
-
-        /// <summary>
         /// Gets an author.
         /// </summary>
         /// <param name="id"></param>
@@ -160,7 +128,7 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/author/id-4
+        ///     Get /api/author/4
         ///     
         ///    
         ///         
@@ -173,9 +141,8 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
+        [Route("{id:int}")]
         [HttpGet]
-        [Route("id-{id:int}")]
         public async Task<IActionResult> GetAuthor(int id)
         {
             AuthorDTO result = await _mediator.Send(new GetAuthorByIdQuery(id));
@@ -192,7 +159,7 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/author/pageNumber-1/pageSize-20
+        ///     Get /api/author?pageNumber=1&pageSize=3
         ///     
         ///    
         ///         
@@ -205,10 +172,8 @@ namespace Library.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
         [HttpGet]
-        [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
-        public async Task<IActionResult> GetPaginatedAuthors(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetPaginatedAuthors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 3)
         {
             PaginatedResult<AuthorDTO> result = await _mediator.Send(new GetPaginatedAuthorsQuery(pageNumber, pageSize));
 

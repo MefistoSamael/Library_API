@@ -14,7 +14,7 @@ namespace Library.Application.Authors.Commands.DeleteAuthorCommand
         }
         public async Task Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
-            Author? entity = await _repository.GetAsyncById(request.Id);
+            Author? entity = await _repository.GetByIdAsync(request.Id);
 
             if (entity is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");

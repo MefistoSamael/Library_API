@@ -1,8 +1,7 @@
-﻿using Azure.Core;
-using Library.Domain.Models.AuthorModel;
+﻿using Library.Domain.Models.AuthorModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Library.Infrastructure.Repositories
+namespace Library.Infrastructure.Repositories.CommandRepositories
 {
     public class AuthorRepository : IAuthorRepository, IDisposable
     {
@@ -29,7 +28,7 @@ namespace Library.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<Author?> GetAsyncById(int authorId)
+        public Task<Author?> GetByIdAsync(int authorId)
         {
             return _context.Authors.AsNoTracking().Where(a => a.Id == authorId).Include(a => a.Books).FirstOrDefaultAsync();
         }
@@ -60,18 +59,6 @@ namespace Library.Infrastructure.Repositories
                     _context.Dispose();
                 }
             }
-        }
-
-        public async Task<IEnumerable<Author>> GetAllAsync()
-        {
-            return await _context.Authors.Include(a => a.Books).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Author>> GetPaginatedAuthors(int pageNumber, int pageSize)
-        {
-            return await _context.Authors
-                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
-                .Include(a => a.Books).ToListAsync();
         }
     }
 }

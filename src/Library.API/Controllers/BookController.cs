@@ -141,20 +141,18 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/Book/pageNumber-1/pageSize-20
+        ///     Get /api/Book?pageNumber=1&pageSize=3
         ///
         /// </remarks>
         /// <response code="200">Certain amount of books</response>
         /// <response code="404">If nothing found or some exception happened</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("pageNumber-{pageNumber:int}/pageSize-{pageSize:int}")]
         [HttpGet]
-        
-        public async Task<IActionResult> GetAllbooksAsync(int pageSize, int pageNumber)
+        public async Task<IActionResult> GetPaginatedBooksAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 3)
         {
             var books = await _mediator.Send(new GetBooksWithPaginationQuery(pageSize, pageNumber));
-
+            
             return Ok(books);
         }
 
@@ -166,14 +164,14 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/Book/id-{id}
+        ///     Get /api/Book/id/1
         ///
         /// </remarks>
         /// <response code="200">Returns the book with specified id</response>
         /// <response code="404">If nothing found or some exception happened</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("id-{id:int}")]
+        [Route("{id:int}")]
         [HttpGet]
         
         public async Task<IActionResult> GetBookByIdAsync(int id)
@@ -191,14 +189,14 @@ namespace Library.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     Get /api/Book/isbn-{isbn}
+        ///     Get /api/Book/isbn/1111111111
         ///
         /// </remarks>
         /// <response code="200">Returns the book with specified isbn</response>
         /// <response code="404">If nothing found or some exception happened</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("isbn-{isbn}")]
+        [Route("isbn/{isbn}")]
         [HttpGet]
         
         public async Task<IActionResult> GetBookByISBNAsync(string isbn)

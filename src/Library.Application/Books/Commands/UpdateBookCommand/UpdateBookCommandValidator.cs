@@ -32,7 +32,7 @@ namespace Library.Application.Books.Commands.UpdateBookCommand
 
         private async Task<bool> BeUniqueISBN(UpdateBookCommand command, string isbn, CancellationToken cancellationToken)
         {
-            Book? book = await _bookRepository.GetAsyncByISBN(isbn);
+            Book? book = await _bookRepository.GetByISBNAsync(isbn);
 
             //If book exsists with such ISBN, probably it is the same book
             if (book is not null)

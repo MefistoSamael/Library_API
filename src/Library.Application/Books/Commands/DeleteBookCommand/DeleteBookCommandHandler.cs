@@ -14,7 +14,7 @@ namespace Library.Application.Books.Commands.DeleteBookCommand
 
         public async Task Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            Book? entity = await _bookRepository.GetAsyncById(request.Id);
+            Book? entity = await _bookRepository.GetByIdAsync(request.Id);
 
             if (entity is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");

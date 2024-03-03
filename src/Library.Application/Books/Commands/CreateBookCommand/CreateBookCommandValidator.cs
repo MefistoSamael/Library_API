@@ -31,7 +31,7 @@ namespace Library.Application.Books.Commands.CreateBookCommand
 
         private async Task<bool> BeUniqueISBN(CreateBookCommand command, string isbn, CancellationToken cancellationToken)
         {
-            Book? book = await _bookRepository.GetAsyncByISBN(isbn);
+            Book? book = await _bookRepository.GetByISBNAsync(isbn);
 
             if (book is not null)
                 return false;

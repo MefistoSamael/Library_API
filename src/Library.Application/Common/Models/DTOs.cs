@@ -34,8 +34,14 @@
 
     public class PaginatedResult<T>
     {
-        public required IEnumerable<T> collection { get; set; }
-        public int currentPage { get; set; }
-        //public int totalPages { get; set; }
+        public required IEnumerable<T> Collection { get; set; }
+
+        public required int CurrentPage { get; set; }
+        
+        public required int TotalPageCount { get; set; }
+
+        public required int TotalItemCount {  get; set; }
+
+        public required int PageSize { get; set;}
     }
 }

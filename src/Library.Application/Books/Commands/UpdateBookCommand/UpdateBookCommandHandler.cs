@@ -23,12 +23,12 @@ namespace Library.Application.Books.Commands.UpdateBookCommand
 
         public async Task<BookDTO> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            Book? entity = await _bookRepository.GetAsyncById(request.Id);
+            Book? entity = await _bookRepository.GetByIdAsync(request.Id);
 
             if (entity is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
 
-            Author? author = await _authorRepository.GetAsyncById(request.AuthorId);
+            Author? author = await _authorRepository.GetByIdAsync(request.AuthorId);
 
             if (author is null)
                 throw new KeyNotFoundException($"Queried object entity was not found, Key: {request.Id}");
